@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PyMessenger – Chat</title>
+  <meta name="description" content="PyMessenger chat interface - send and receive messages in real time." />
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body class="chat-page">
+
+  <!-- ── Sidebar ─────────────────────────────── -->
+  <aside class="sidebar">
+    <div class="sidebar-header">
+      <span class="logo-sm">💬</span>
+      <h2>PyMessenger</h2>
+      <div class="user-info-badge">
+        <div class="avatar-wrap">
+          <div class="avatar lg" id="my-avatar">?</div>
+        </div>
+        <div class="user-text">
+          <div class="name" id="my-display-name">Loading…</div>
+          <div class="status">● Online</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="search-input" placeholder="🔍  Search users…" oninput="filterUsers(this.value)" />
+    </div>
+
+    <div class="section-label">All Users</div>
+    <div class="user-list" id="user-list">
+      <!-- injected by JS -->
+    </div>
+
+    <button class="logout-btn" onclick="logout()">🚪 <span>Logout</span></button>
+  </aside>
+
+  <!-- ── Main Chat ───────────────────────────── -->
+  <main class="chat-main">
+    <!-- Empty state (no chat selected) -->
+    <div class="empty-state" id="empty-state">
+      <div class="empty-icon">💬</div>
+      <h3>Select a contact to chat</h3>
+      <p>Pick someone from the sidebar to start a conversation.</p>
+    </div>
+
+    <!-- Conversation panel -->
+    <div class="conversation" id="conversation">
+      <div class="chat-header">
+        <div class="avatar-wrap">
+          <div class="avatar lg" id="peer-avatar">?</div>
+          <span class="online-dot offline" id="peer-online-dot"></span>
+        </div>
+        <div class="chat-header-info">
+          <div class="peer-name" id="peer-name">–</div>
+          <div class="peer-status offline" id="peer-status">● Offline</div>
+        </div>
+      </div>
+
+      <div class="messages-area" id="messages-area">
+        <!-- bubbles injected by JS -->
+      </div>
+
+      <div class="input-area">
+        <textarea
+          class="msg-input"
+          id="msg-input"
+          placeholder="Type a message…"
+          rows="1"
+          oninput="autoGrow(this)"
+        ></textarea>
+        <button class="send-btn" id="send-btn" onclick="sendMessage()" title="Send">➤</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Toast -->
+  <div class="toast" id="toast"></div>
+
+  <script src="/static/app.js"></script>
+  <script>
+    initChat();
+
+    // Enter to send (Shift+Enter for newline)
+    document.getElementById('msg-input').addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+  </script>
+</body>
+</html>
